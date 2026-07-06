@@ -27,9 +27,15 @@
       <div class="order-tabs">
         <el-radio-group v-model="activeTab">
           <el-radio-button label="all">全部订单</el-radio-button>
-          <el-radio-button label="0">待付款</el-radio-button>
+          <el-radio-button label="0">
+            待付款
+            <span v-if="statusCounts[0] > 0" class="tab-badge">{{ statusCounts[0] }}</span>
+          </el-radio-button>
           <el-radio-button label="1">已付款</el-radio-button>
-          <el-radio-button label="2">已发货</el-radio-button>
+          <el-radio-button label="2">
+            已发货
+            <span v-if="statusCounts[2] > 0" class="tab-badge">{{ statusCounts[2] }}</span>
+          </el-radio-button>
           <el-radio-button label="3">已完成</el-radio-button>
         </el-radio-group>
       </div>
@@ -58,6 +64,16 @@
           </div>
 
           <div class="order-body">
+            <!-- 商品图片列表 -->
+            <div v-if="order.items && order.items.length" class="order-products">
+              <div v-for="item in order.items" :key="item.id" class="order-product-item">
+                <img :src="item.productImage" :alt="item.productName" class="product-thumb" />
+                <div class="product-info">
+                  <span class="product-name">{{ item.productName }}</span>
+                  <span class="product-meta">×{{ item.quantity }}</span>
+                </div>
+              </div>
+            </div>
             <div class="order-amount">
               <span class="label">订单金额：</span>
               <span class="price">{{ order.totalAmount }}</span>
@@ -140,6 +156,17 @@ const getStatusType = (status) => statusMap[status]?.type || 'info'
 const filteredOrders = computed(() => {
   if (activeTab.value === 'all') return orders.value
   return orders.value.filter(order => order.status === parseInt(activeTab.value))
+})
+
+// 各状态订单数量统计
+const statusCounts = computed(() => {
+  const counts = { 0: 0, 1: 0, 2: 0, 3: 0 }
+  orders.value.forEach(order => {
+    if (counts[order.status] !== undefined) {
+      counts[order.status]++
+    }
+  })
+  return counts
 })
 
 const fetchOrders = async () => {
@@ -335,6 +362,21 @@ onMounted(() => {
   padding: 16px 20px;
   border-radius: 8px;
   margin-bottom: 16px;
+
+  .tab-badge {
+    display: inline-block;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    padding: 0 4px;
+    font-size: 10px;
+    color: #fff;
+    background: #ff4d4f;
+    border-radius: 8px;
+    text-align: center;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
 }
 
 .loading, .empty {
@@ -377,6 +419,52 @@ onMounted(() => {
 
 .order-body {
   padding: 20px;
+}
+
+.order-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.order-product-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  max-width: 280px;
+}
+
+.product-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.product-name {
+  font-size: 13px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-meta {
+  font-size: 12px;
+  color: #999;
 }
 
 .order-amount {

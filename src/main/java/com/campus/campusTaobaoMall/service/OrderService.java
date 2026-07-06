@@ -111,6 +111,11 @@ public class OrderService {
 
     public Result<?> getOrderList(Long userId) {
         List<Orders> orders = orderMapper.findByUserId(userId);
+        // 为每个订单加载商品信息（含图片）
+        for (Orders order : orders) {
+            List<OrderItem> items = orderItemMapper.findByOrderId(order.getId());
+            order.setItems(items);
+        }
         return Result.success(orders);
     }
 

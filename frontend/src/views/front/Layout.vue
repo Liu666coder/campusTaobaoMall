@@ -16,7 +16,10 @@
         <div class="top-right">
           <router-link to="/admin/login" class="top-link">管理员入口</router-link>
           <el-divider direction="vertical" />
-          <router-link to="/store/orders" class="top-link">我的订单</router-link>
+          <router-link to="/store/orders" class="top-link order-link">
+            我的订单
+            <el-badge :value="pendingOrderCount" :hidden="pendingOrderCount === 0" class="order-badge" />
+          </router-link>
           <el-divider direction="vertical" />
           <router-link to="/store/cart" class="top-link">
             <el-icon><ShoppingCart /></el-icon> 购物车
@@ -130,6 +133,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useCartStore } from '@/store/cart'
 import { getCategories } from '@/api/product'
+import { getOrderList } from '@/api/order'
 import { ElMessageBox } from 'element-plus'
 
 const router = useRouter()
@@ -141,12 +145,26 @@ const cartStore = useCartStore()
 watch(() => route.path, () => {
   if (userStore.token) {
     cartStore.fetchCartCount()
+    fetchPendingOrders()
   }
 })
 
 const keyword = ref('')
 const categories = ref([])
 const currentCategory = ref(null)
+const pendingOrderCount = ref(0)
+
+const fetchPendingOrders = async () => {
+  try {
+    const res = await getOrderList()
+    if (res.code === 200 && Array.isArray(res.data)) {
+      // 状态0=待付款，状态2=已发货待收货
+      pendingOrderCount.value = res.data.filter(o => o.status === 0 || o.status === 2).length
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 provide('currentCategory', currentCategory)
 provide('categories', categories)
@@ -201,6 +219,7 @@ onMounted(async () => {
       return
     }
     cartStore.fetchCartCount()
+    fetchPendingOrders()
   }
 })
 </script>
@@ -432,6 +451,24 @@ onMounted(async () => {
     position: absolute;
     top: -8px;
     right: -8px;
+  }
+}
+
+.order-link {
+  position: relative;
+}
+
+.order-badge {
+  :deep(.el-badge__content) {
+    background: #ff4d4f;
+    position: absolute;
+    top: -10px;
+    right: -16px;
+    font-size: 10px;
+    height: 16px;
+    line-height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
   }
 }
 </style>
