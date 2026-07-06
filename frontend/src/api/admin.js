@@ -134,3 +134,4 @@ export function updateOrderStatus(id, status) {
 export function generateDescription(data) {
   return request.post('/admin/ai/generate-description', data)
 }
+

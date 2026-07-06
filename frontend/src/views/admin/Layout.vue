@@ -11,9 +11,9 @@
         :default-active="activeMenu"
         :collapse="isCollapsed"
         router
-        background-color="#1a1a2e"
-        text-color="#a0aec0"
-        active-text-color="#FF4400"
+        background-color="transparent"
+        text-color="rgba(255,255,255,0.55)"
+        active-text-color="#ff5722"
       >
         <el-menu-item index="/admin">
           <el-icon><DataBoard /></el-icon>
@@ -219,8 +219,8 @@ onUnmounted(() => {
 
 .sidebar {
   width: 220px;
-  background: #1a1a2e;
-  transition: width .3s;
+  background: #151829;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   flex-shrink: 0;
   position: fixed;
@@ -239,12 +239,13 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(255,255,255,.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
   .logo-text {
     font-size: 18px;
-    font-weight: bold;
-    color: #FF4400;
+    font-weight: 700;
+    color: #ff5722;
+    letter-spacing: 0.5px;
   }
 
   .logo-icon {
@@ -254,6 +255,7 @@ onUnmounted(() => {
 
 .el-menu {
   border-right: none;
+  padding: 8px 6px;
 }
 
 .order-menu-item {
@@ -261,7 +263,7 @@ onUnmounted(() => {
 
   .order-count {
     position: absolute;
-    top: 8px;
+    top: 10px;
     right: 16px;
     min-width: 18px;
     height: 18px;
@@ -273,6 +275,7 @@ onUnmounted(() => {
     line-height: 18px;
     text-align: center;
     border-radius: 9px;
+    box-shadow: 0 2px 6px rgba(255, 77, 79, 0.35);
   }
 }
 
@@ -280,9 +283,9 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #f0f2f5;
+  background: #f3f5f9;
   margin-left: 220px;
-  transition: margin-left .3s;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.collapsed {
     margin-left: 64px;
@@ -295,8 +298,10 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  padding: 0 28px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 10;
 }
 
 .header-left {
@@ -309,44 +314,51 @@ onUnmounted(() => {
   font-size: 20px;
   cursor: pointer;
   color: #666;
+  transition: color 0.2s;
+  padding: 4px;
+  border-radius: 6px;
 
   &:hover {
-    color: #FF4400;
+    color: #ff5722;
+    background: rgba(255, 87, 34, 0.06);
   }
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .role-tag {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 16px;
-  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
 }
 
 .admin-name {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   color: #333;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  font-weight: 500;
+  font-size: 14px;
 
   &:hover {
-    background: #f5f5f5;
+    background: #f5f7fa;
   }
 }
 
 .avatar-small {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #FF4400, #FF6633);
+  background: linear-gradient(135deg, #ff5722, #ff7043);
   border-radius: 50%;
   display: flex;
   align-items: center;
