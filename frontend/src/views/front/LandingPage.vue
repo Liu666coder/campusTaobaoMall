@@ -108,11 +108,6 @@
         精选好物正沿着星光轨迹，抵达你的大学时光。
       </p>
 
-      <div class="tags">
-        <span v-for="(tag, i) in tags" :key="tag" class="tag"
-              :style="{ transitionDelay: `${i * 0.12}s` }">{{ tag }}</span>
-      </div>
-
       <div class="enter-block">
         <button class="enter-btn" @click="enterStore">
           <span class="btn-label">进入商城</span>
@@ -144,8 +139,6 @@ const cartLit = ref(false)      // 购物车被橙光点亮
 const ringsShow = ref(false)    // 能量环 / 轨道粒子出现
 const contentShow = ref(false)  // 文案依次浮现
 const isLeaving = ref(false)    // 退场
-
-const tags = ['精选好物', '校园极速达', '安心售后', '专属优惠']
 
 // 星点扩散：随机分布的闪烁星点（移动端减少）
 const starCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 22 : 42
@@ -687,7 +680,7 @@ $gold: #ffd28c;
 /* 文字内容 */
 .content {
   position: absolute;
-  top: 58%;
+  top: 54%;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -708,9 +701,7 @@ $gold: #ffd28c;
   .title { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
   .tagline { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
   .desc { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
-  .tags { opacity: 1; transform: translateY(0); transition-delay: 0.75s; }
-  .enter-block { opacity: 1; transform: translateY(0); transition-delay: 0.95s; }
-  .tag { opacity: 1; transform: translateY(0); }
+  .enter-block { opacity: 1; transform: translateY(0); transition-delay: 0.75s; }
 }
 
 .eyebrow {
@@ -730,15 +721,6 @@ $gold: #ffd28c;
 .desc {
   font-size: 15px; line-height: 2; color: rgba(200,215,245,0.66);
   max-width: 540px; margin: 0 auto 32px;
-}
-
-.tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 42px; }
-.tag {
-  padding: 9px 22px; font-size: 14px; color: rgba(255,255,255,0.88);
-  border-radius: 40px; background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,180,120,0.28); backdrop-filter: blur(8px);
-  opacity: 0; transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .enter-block { display: flex; flex-direction: column; align-items: center; }
@@ -806,7 +788,7 @@ $gold: #ffd28c;
   @keyframes orbitA { from { transform: rotate(0) translateX(115px) rotate(0); } to { transform: rotate(360deg) translateX(115px) rotate(-360deg); } }
   @keyframes orbitB { from { transform: rotate(120deg) translateX(135px) rotate(-120deg); } to { transform: rotate(480deg) translateX(135px) rotate(-480deg); } }
   @keyframes orbitC { from { transform: rotate(240deg) translateX(100px) rotate(-240deg); } to { transform: rotate(600deg) translateX(100px) rotate(-600deg); } }
-  .content { top: 55%; }
+  .content { top: 52%; }
   .title { font-size: 34px; letter-spacing: 2px; }
   .tagline { font-size: 17px; }
   .desc { font-size: 13.5px; padding: 0 6px; }
@@ -816,8 +798,6 @@ $gold: #ffd28c;
 
 @media (max-width: 380px) {
   .title { font-size: 28px; }
-  .tags { gap: 10px; }
-  .tag { padding: 8px 16px; font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

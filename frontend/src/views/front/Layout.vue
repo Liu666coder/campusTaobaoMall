@@ -34,6 +34,10 @@
           <span class="logo-text">校园淘宝</span>
         </div>
 
+        <button class="back-landing" @click="$router.push('/')">
+          <span class="landing-icon">✦</span> 回到开始页面
+        </button>
+
         <div class="search-box">
           <el-input
             v-model="keyword"
@@ -306,6 +310,40 @@ onMounted(async () => {
   align-items: center;
   cursor: pointer;
   flex-shrink: 0;
+
+  .back-landing {
+    margin-left: 12px;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 20px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(135deg, #FF4400, #FF7A18);
+    box-shadow: 0 2px 10px rgba(255, 68, 0, 0.3);
+    transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    outline: none;
+    &:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 20px rgba(255, 68, 0, 0.4);
+    }
+    &:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 8px rgba(255, 68, 0, 0.3);
+    }
+    .landing-icon {
+      font-size: 11px;
+      animation: twinkle 1.5s ease-in-out infinite;
+    }
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
 
   .logo-icon {
     font-size: 32px;

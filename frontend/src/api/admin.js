@@ -128,3 +128,9 @@ export function getOrderDetail(id) {
 export function updateOrderStatus(id, status) {
   return request.put(`/orders/admin/${id}/status`, null, { params: { status } })
 }
+
+// ========== AI生成 ==========
+// AI一键生成商品简介
+export function generateDescription(data) {
+  return request.post('/admin/ai/generate-description', data)
+}

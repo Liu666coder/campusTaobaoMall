@@ -111,7 +111,19 @@
           </div>
         </el-form-item>
         <el-form-item label="商品描述">
-          <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入商品描述" />
+          <div class="description-box">
+            <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入商品描述" />
+            <el-button
+              type="primary"
+              class="ai-btn"
+              :loading="aiLoading"
+              :disabled="!form.name"
+              @click="handleAiGenerate"
+            >
+              <span v-if="!aiLoading">✨ AI一键生成简介</span>
+              <span v-else>AI生成中...</span>
+            </el-button>
+          </div>
         </el-form-item>
       </el-form>
 
@@ -125,11 +137,12 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
-import { getAdminProducts, addProduct, updateProduct, deleteProduct, updateProductStatus, getAdminCategories } from '@/api/admin'
+import { getAdminProducts, addProduct, updateProduct, deleteProduct, updateProductStatus, getAdminCategories, generateDescription } from '@/api/admin'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const loading = ref(false)
 const submitLoading = ref(false)
+const aiLoading = ref(false)
 const products = ref([])
 const categories = ref([])
 const dialogVisible = ref(false)
@@ -158,7 +171,8 @@ const beforeUpload = (file) => {
 const handleUploadSuccess = (response) => {
   if (response.code === 200) {
     // 添加时间戳防止浏览器缓存
-    form.image = response.data + '?t=' + Date.now()
+    const imgUrl = response.data + '?t=' + Date.now()
+    Object.assign(form, { image: imgUrl })
     ElMessage.success('图片上传成功')
   } else {
     ElMessage.error(response.message || '上传失败')
@@ -303,6 +317,38 @@ onMounted(() => {
   fetchProducts()
   fetchCategories()
 })
+
+// AI一键生成商品简介
+const handleAiGenerate = async () => {
+  if (!form.name) {
+    ElMessage.warning('请先输入商品名称')
+    return
+  }
+  aiLoading.value = true
+  try {
+    // 找到分类名称
+    const cat = categories.value.find(c => c.id === form.categoryId)
+    const categoryName = cat ? cat.name : '未分类'
+
+    const res = await generateDescription({
+      productName: form.name,
+      category: categoryName,
+      price: form.price
+    })
+    if (res.code == 200 && res.data) {
+      const desc = String(res.data).trim()
+      form.description = desc
+      ElMessage.success('AI简介生成成功')
+    } else {
+      ElMessage.error('生成失败，请重试')
+    }
+  } catch (e) {
+    console.error('AI生成失败:', e)
+    ElMessage.error('AI服务调用失败')
+  } finally {
+    aiLoading.value = false
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -389,6 +435,29 @@ onMounted(() => {
 
     span {
       font-size: 13px;
+    }
+  }
+}
+
+.description-box {
+  width: 100%;
+  position: relative;
+
+  .ai-btn {
+    margin-top: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 }
