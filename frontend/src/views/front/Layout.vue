@@ -173,6 +173,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useCartStore } from '@/store/cart'
 import { getCategories } from '@/api/product'
+import { ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
@@ -227,6 +228,21 @@ onMounted(async () => {
 
   if (userStore.token) {
     await userStore.fetchUserInfo()
+    // 检查用户是否被禁用
+    if (userStore.userInfo && userStore.userInfo.status === 0) {
+      ElMessageBox.alert('您的账号已被禁用，请联系管理员', '账号已被禁用', {
+        confirmButtonText: '确定',
+        type: 'warning',
+        showClose: false,
+        closeOnClickModal: false,
+        closeOnPressEscape: false
+      }).then(() => {
+        userStore.logout()
+        cartStore.cartCount = 0
+        window.location.href = '/login'
+      })
+      return
+    }
     cartStore.fetchCartCount()
   }
 })

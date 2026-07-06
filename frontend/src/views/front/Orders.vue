@@ -188,9 +188,8 @@ const handlePayOrder = async () => {
     const res = await payOrderApi(orderDetail.value.id)
     if (res.code === 200) {
       ElMessage.success('付款成功')
-      isCheckout.value = false
-      router.replace('/orders')
-      fetchOrders()
+      // 付款成功后跳转到购物车页面
+      router.push('/store/cart')
     }
   } catch (e) {
     ElMessage.error('付款失败')

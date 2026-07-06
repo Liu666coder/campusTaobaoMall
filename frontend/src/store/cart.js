@@ -12,6 +12,9 @@ export const useCartStore = defineStore('cart', () => {
       const res = await getCartList()
       if (res.code === 200) {
         cartList.value = res.data
+        // 清理selectedIds，移除不在购物车中的ID
+        const validIds = new Set(cartList.value.map(item => Number(item.id)))
+        selectedIds.value = selectedIds.value.filter(id => validIds.has(id))
       }
     } catch (e) {
       console.error(e)

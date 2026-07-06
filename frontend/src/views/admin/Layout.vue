@@ -40,15 +40,16 @@
           <span>管理员管理</span>
         </el-menu-item>
 
-        <el-menu-item index="/admin/orders">
+        <el-menu-item index="/admin/orders" class="order-menu-item">
           <el-icon><Document /></el-icon>
           <span>订单管理</span>
+          <span v-if="pendingShipmentCount > 0" class="order-count">{{ pendingShipmentCount > 99 ? '99+' : pendingShipmentCount }}</span>
         </el-menu-item>
       </el-menu>
     </aside>
 
     <!-- 主内容区 -->
-    <div class="main-area">
+    <div class="main-area" :class="{ collapsed: isCollapsed }">
       <!-- 顶部栏 -->
       <header class="top-header">
         <div class="header-left">
@@ -98,15 +99,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, provide } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { getAdminInfo } from '@/api/admin'
+import { getAdminInfo, getAdminOrders } from '@/api/admin'
 
 const router = useRouter()
 const route = useRoute()
 
 const isCollapsed = ref(false)
 const adminInfo = ref(null)
+const pendingShipmentCount = ref(0)
+let orderPollingTimer = null
 
 const roleMap = {
   'PRODUCT_MANAGER': { text: '商品专员', tag: '' },
@@ -153,6 +156,34 @@ const handleCommand = (command) => {
   }
 }
 
+// 检查待发货订单（状态1=已付款待发货）
+const checkNewOrders = async () => {
+  try {
+    const res = await getAdminOrders({ status: 1 })
+    if (res.code === 200 && res.data) {
+      pendingShipmentCount.value = res.data.length
+    } else {
+      pendingShipmentCount.value = 0
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+// 启动订单轮询
+const startOrderPolling = () => {
+  checkNewOrders() // 立即检查一次
+  orderPollingTimer = setInterval(checkNewOrders, 30000) // 每30秒检查一次
+}
+
+// 停止轮询
+const stopOrderPolling = () => {
+  if (orderPollingTimer) {
+    clearInterval(orderPollingTimer)
+    orderPollingTimer = null
+  }
+}
+
 // 监听路由变化，从个人资料页返回时刷新管理员信息
 watch(() => route.path, (newPath, oldPath) => {
   if (oldPath === '/admin/profile' && newPath !== '/admin/profile') {
@@ -165,12 +196,18 @@ onMounted(async () => {
     const res = await getAdminInfo()
     if (res.code === 200) {
       adminInfo.value = res.data
+      // 登录成功后启动订单轮询
+      startOrderPolling()
     } else {
       router.push('/admin/login')
     }
   } catch (e) {
     router.push('/admin/login')
   }
+})
+
+onUnmounted(() => {
+  stopOrderPolling()
 })
 </script>
 
@@ -186,6 +223,11 @@ onMounted(async () => {
   transition: width .3s;
   overflow: hidden;
   flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
 
   &.collapsed {
     width: 64px;
@@ -214,11 +256,44 @@ onMounted(async () => {
   border-right: none;
 }
 
+.order-badge {
+  :deep(.el-badge__dot) {
+    top: 2px;
+    right: 6px;
+  }
+}
+
+.order-menu-item {
+  position: relative;
+
+  .order-count {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: #ff4d4f;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 9px;
+  }
+}
+
 .main-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: #f0f2f5;
+  margin-left: 220px;
+  transition: margin-left .3s;
+
+  &.collapsed {
+    margin-left: 64px;
+  }
 }
 
 .top-header {
@@ -254,7 +329,11 @@ onMounted(async () => {
 }
 
 .role-tag {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 16px;
+  letter-spacing: 0.5px;
 }
 
 .admin-name {

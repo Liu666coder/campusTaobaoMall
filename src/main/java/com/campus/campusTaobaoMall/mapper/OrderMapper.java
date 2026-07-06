@@ -42,6 +42,9 @@ public interface OrderMapper {
     @Delete("DELETE FROM orders WHERE id=#{id}")
     int deleteById(@Param("id") Long id);
 
+    @Delete("DELETE FROM orders WHERE user_id=#{userId}")
+    int deleteByUserId(@Param("userId") Long userId);
+
     @Select("SELECT COUNT(*) FROM orders")
     int count();
 }

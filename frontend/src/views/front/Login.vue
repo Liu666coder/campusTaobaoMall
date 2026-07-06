@@ -7,6 +7,9 @@
             <span class="logo-text">校园淘宝</span>
           </div>
           <h1>用户登录</h1>
+          <el-button text class="back-btn" @click="$router.push('/store')">
+            <el-icon><ArrowLeft /></el-icon>返回首页
+          </el-button>
         </div>
       </div>
     </div>
@@ -267,6 +270,16 @@ const handlePhoneLogin = async () => {
 .header-inner {
   display: flex;
   align-items: center;
+
+  .back-btn {
+    margin-left: auto;
+    font-size: 14px;
+    color: #666;
+
+    &:hover {
+      color: #FF4400;
+    }
+  }
 }
 
 .logo {

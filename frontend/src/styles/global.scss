@@ -14,6 +14,21 @@ $--color-info: #909399;
   box-sizing: border-box;
 }
 
+// 重置mark标签样式，消除黄色高亮
+mark {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
+::highlight(search-text) {
+  background-color: transparent;
+}
+
+::highlight(search-text-exact) {
+  background-color: transparent;
+}
+
 html, body {
   width: 100%;
   height: 100%;

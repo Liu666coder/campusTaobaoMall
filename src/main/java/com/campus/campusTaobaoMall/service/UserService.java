@@ -2,6 +2,9 @@ package com.campus.campusTaobaoMall.service;
 
 import com.campus.campusTaobaoMall.dto.LoginRequest;
 import com.campus.campusTaobaoMall.entity.User;
+import com.campus.campusTaobaoMall.mapper.CartMapper;
+import com.campus.campusTaobaoMall.mapper.OrderItemMapper;
+import com.campus.campusTaobaoMall.mapper.OrderMapper;
 import com.campus.campusTaobaoMall.mapper.UserMapper;
 import com.campus.campusTaobaoMall.util.JwtUtil;
 import com.campus.campusTaobaoMall.vo.Result;
@@ -15,6 +18,15 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CartMapper cartMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private OrderItemMapper orderItemMapper;
 
     public Result<?> register(User user) {
         // 检查用户名是否已存在
@@ -116,6 +128,11 @@ public class UserService {
     }
 
     public Result<?> deleteUser(Long userId) {
+        // 先删除关联记录
+        cartMapper.deleteByUserId(userId);
+        orderItemMapper.deleteByUserId(userId);
+        orderMapper.deleteByUserId(userId);
+        // 再删除用户
         userMapper.deleteById(userId);
         return Result.success("删除成功");
     }

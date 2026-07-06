@@ -52,7 +52,7 @@
           </div>
 
           <div class="action-section">
-            <div class="quantity-box">
+            <div class="quantity-box" v-if="product.stock > 0">
               <span class="label">数量</span>
               <el-input-number
                 v-model="quantity"
@@ -65,24 +65,42 @@
 
             <div class="action-buttons">
               <el-button
+                v-if="product.stock > 0"
                 type="primary"
                 size="large"
                 class="buy-btn"
-                :disabled="product.stock === 0"
                 @click="handleBuyNow"
               >
                 <el-icon><ShoppingCart /></el-icon>
                 立即购买
               </el-button>
               <el-button
+                v-else
+                type="info"
+                size="large"
+                class="buy-btn sold-out"
+                disabled
+              >
+                已售完
+              </el-button>
+              <el-button
+                v-if="product.stock > 0"
                 type="warning"
                 size="large"
                 class="cart-btn"
-                :disabled="product.stock === 0"
                 @click="handleAddCart"
               >
                 <el-icon><ShoppingCart /></el-icon>
                 加入购物车
+              </el-button>
+              <el-button
+                v-else
+                type="info"
+                size="large"
+                class="cart-btn sold-out"
+                disabled
+              >
+                已售完
               </el-button>
             </div>
           </div>
@@ -353,6 +371,13 @@ onMounted(fetchProduct)
     &:hover {
       background: linear-gradient(135deg, #FFD700, #FFEC8B);
     }
+  }
+
+  .sold-out {
+    background: #c0c4cc !important;
+    border: none !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
   }
 }
 

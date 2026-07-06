@@ -193,6 +193,23 @@ onMounted(fetchOrders)
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 16px;
+
+  :deep(.el-form-item__label) {
+    color: #606266;
+  }
+
+  :deep(.el-input__inner) {
+    color: #606266;
+  }
+
+  :deep(.el-select__wrapper .el-select__placeholder) {
+    color: #a8abb2 !important;
+  }
+
+  :deep(.el-button:not(.el-button--primary)) {
+    color: #606266;
+    background: #fff;
+  }
 }
 
 .table-card {

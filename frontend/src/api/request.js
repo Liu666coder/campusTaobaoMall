@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import router from '@/router'
 
 const request = axios.create({
@@ -60,7 +60,21 @@ request.interceptors.response.use(
         }
         ElMessage.error('登录已过期，请重新登录')
       } else if (status === 403) {
-        ElMessage.error(data?.message || '没有权限访问')
+        // 检查是否是用户被禁用的情况
+        if (data?.message && data.message.includes('禁用')) {
+          ElMessageBox.alert('您的账号已被禁用，请联系管理员', '账号已被禁用', {
+            confirmButtonText: '确定',
+            type: 'warning',
+            showClose: false,
+            closeOnClickModal: false,
+            closeOnPressEscape: false
+          }).then(() => {
+            localStorage.removeItem('token')
+            window.location.href = '/login'
+          })
+        } else {
+          ElMessage.error(data?.message || '没有权限访问')
+        }
       } else {
         ElMessage.error(data?.message || '请求失败')
       }

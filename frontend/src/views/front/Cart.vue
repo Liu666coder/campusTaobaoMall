@@ -104,10 +104,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
 const cartStore = useCartStore()
 
-// 计算是否全选
+// 计算是否全选 - 检查每个商品是否真的被选中
 const isAllSelected = computed(() => {
   if (cartStore.cartList.length === 0) return false
-  return cartStore.selectedIds.length === cartStore.cartList.length
+  return cartStore.cartList.every(item => cartStore.selectedIds.includes(Number(item.id)))
 })
 
 // 全选/取消全选

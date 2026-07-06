@@ -14,12 +14,12 @@
           <el-input v-model="searchKeyword" placeholder="商品名称" clearable @keyup.enter="fetchProducts" />
         </el-form-item>
         <el-form-item label="分类">
-          <el-select v-model="searchCategoryId" placeholder="全部分类" clearable>
+          <el-select v-model="searchCategoryId" placeholder="全部分类" clearable style="width: 160px;">
             <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchStatus" placeholder="全部" clearable>
+          <el-select v-model="searchStatus" placeholder="全部" clearable style="width: 120px;">
             <el-option label="上架" :value="1" />
             <el-option label="下架" :value="0" />
           </el-select>
@@ -102,7 +102,7 @@
               :on-error="handleUploadError"
               accept="image/*"
             >
-              <img v-if="form.image" :src="form.image" class="preview-image" />
+              <img v-if="form.image" :src="form.image" class="preview-image" @error="handleImageError" />
               <div v-else class="upload-placeholder">
                 <el-icon size="40"><Upload /></el-icon>
                 <span>点击上传图片</span>
@@ -157,7 +157,8 @@ const beforeUpload = (file) => {
 
 const handleUploadSuccess = (response) => {
   if (response.code === 200) {
-    form.image = response.data
+    // 添加时间戳防止浏览器缓存
+    form.image = response.data + '?t=' + Date.now()
     ElMessage.success('图片上传成功')
   } else {
     ElMessage.error(response.message || '上传失败')
@@ -166,6 +167,11 @@ const handleUploadSuccess = (response) => {
 
 const handleUploadError = () => {
   ElMessage.error('图片上传失败')
+}
+
+const handleImageError = (e) => {
+  // 图片加载失败时的处理
+  console.warn('图片加载失败:', e.target.src)
 }
 const formRef = ref(null)
 
@@ -365,6 +371,10 @@ onMounted(() => {
     height: 180px;
     display: block;
     object-fit: cover;
+  }
+
+  .image-uploader:hover .preview-image {
+    opacity: 0.7;
   }
 
   .upload-placeholder {
