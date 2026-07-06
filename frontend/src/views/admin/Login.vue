@@ -1,5 +1,22 @@
 <template>
   <div class="admin-login-page">
+    <!-- 背景装饰文字 -->
+    <div class="bg-decor">
+      <span class="bg-text bg-text-1">校园淘宝</span>
+      <span class="bg-text bg-text-2">轻松购物</span>
+      <span class="bg-text bg-text-3">品质生活</span>
+      <span class="bg-text bg-text-4">学生专属</span>
+      <span class="bg-text bg-text-5">优惠多多</span>
+      <span class="bg-text bg-text-6">好物推荐</span>
+      <span class="bg-text bg-text-7">正品保障</span>
+      <span class="bg-text bg-text-8">极速发货</span>
+      <span class="bg-icon bg-icon-1">🛒</span>
+      <span class="bg-icon bg-icon-2">📦</span>
+      <span class="bg-icon bg-icon-3">🛍️</span>
+      <span class="bg-icon bg-icon-4">💰</span>
+      <span class="bg-icon bg-icon-5">🔥</span>
+    </div>
+
     <div class="login-container">
       <div class="login-header">
         <div class="logo">
@@ -87,7 +104,120 @@ const handleLogin = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(135deg, #2a3a5c 0%, #1e3a5f 50%, #2d4a6a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.bg-text {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.08);
+  font-weight: 900;
+  white-space: nowrap;
+
+  &.bg-text-1 {
+    font-size: 120px;
+    top: 10%;
+    left: -5%;
+    transform: rotate(-10deg);
+  }
+
+  &.bg-text-2 {
+    font-size: 80px;
+    bottom: 20%;
+    right: -3%;
+    transform: rotate(5deg);
+  }
+
+  &.bg-text-3 {
+    font-size: 60px;
+    top: 60%;
+    left: 5%;
+    transform: rotate(-5deg);
+  }
+
+  &.bg-text-4 {
+    font-size: 50px;
+    top: 15%;
+    right: 10%;
+    transform: rotate(8deg);
+  }
+
+  &.bg-text-5 {
+    font-size: 45px;
+    bottom: 10%;
+    left: 35%;
+    transform: rotate(3deg);
+  }
+
+  &.bg-text-6 {
+    font-size: 55px;
+    top: 75%;
+    right: 15%;
+    transform: rotate(-7deg);
+  }
+
+  &.bg-text-7 {
+    font-size: 40px;
+    top: 35%;
+    left: 15%;
+    transform: rotate(12deg);
+  }
+
+  &.bg-text-8 {
+    font-size: 42px;
+    top: 5%;
+    left: 50%;
+    transform: rotate(-4deg);
+  }
+}
+
+.bg-icon {
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.08;
+
+  &.bg-icon-1 {
+    top: 20%;
+    left: 15%;
+    transform: rotate(-15deg);
+  }
+
+  &.bg-icon-2 {
+    bottom: 15%;
+    right: 20%;
+    transform: rotate(10deg);
+  }
+
+  &.bg-icon-3 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    font-size: 80px;
+  }
+
+  &.bg-icon-4 {
+    top: 80%;
+    left: 50%;
+    font-size: 50px;
+    transform: rotate(20deg);
+  }
+
+  &.bg-icon-5 {
+    top: 5%;
+    right: 35%;
+    font-size: 45px;
+    transform: rotate(-10deg);
+  }
 }
 
 .login-container {
@@ -109,6 +239,7 @@ const handleLogin = async () => {
   justify-content: center;
   gap: 8px;
   margin-bottom: 16px;
+  cursor: pointer;
 
   .logo-icon {
     font-size: 36px;
@@ -122,9 +253,10 @@ const handleLogin = async () => {
 }
 
 .login-header h1 {
-  font-size: 20px;
-  color: #666;
+  font-size: 18px;
+  color: #999;
   font-weight: normal;
+  letter-spacing: 4px;
 }
 
 .login-btn {
@@ -133,6 +265,7 @@ const handleLogin = async () => {
   font-size: 16px;
   background: linear-gradient(135deg, #FF4400, #FF6633);
   border: none;
+  letter-spacing: 8px;
 
   &:hover {
     background: linear-gradient(135deg, #FF6633, #FF8866);
@@ -146,6 +279,7 @@ const handleLogin = async () => {
   a {
     color: #999;
     font-size: 14px;
+    transition: color .3s;
 
     &:hover {
       color: #FF4400;
