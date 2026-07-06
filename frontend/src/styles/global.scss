@@ -2,10 +2,6 @@
 $--color-primary: #FF4400;
 $--color-primary-light: #FF6633;
 $--color-primary-dark: #CC3600;
-$--color-success: #67C23A;
-$--color-warning: #E6A23C;
-$--color-danger: #F56C6C;
-$--color-info: #909399;
 
 // 全局样式
 * {
@@ -68,15 +64,6 @@ a {
   padding: 0 15px;
 }
 
-// 卡片样式
-.card {
-  background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.08);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
 // 价格样式
 .price {
   color: #{$--color-primary};
@@ -87,18 +74,4 @@ a {
     content: '¥';
     font-size: 12px;
   }
-}
-
-// 文本溢出省略
-.text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// 清除浮动
-.clearfix::after {
-  content: '';
-  display: block;
-  clear: both;
 }

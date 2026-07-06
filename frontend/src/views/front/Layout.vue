@@ -14,7 +14,7 @@
           </template>
         </div>
         <div class="top-right">
-          <router-link to="/admin/login" class="top-link">卖家中心</router-link>
+          <router-link to="/admin/login" class="top-link">管理员入口</router-link>
           <el-divider direction="vertical" />
           <router-link to="/store/orders" class="top-link">我的订单</router-link>
           <el-divider direction="vertical" />
@@ -34,9 +34,11 @@
           <span class="logo-text">校园淘宝</span>
         </div>
 
-        <button class="back-landing" @click="$router.push('/')">
+        <span class="nav-link" @click="$router.push('/')">
           <span class="landing-icon">✦</span> 回到开始页面
-        </button>
+        </span>
+
+        <span class="nav-link" @click="$router.push('/store')">首页</span>
 
         <div class="search-box">
           <el-input
@@ -113,59 +115,10 @@
       <router-view :key="routerViewKey" />
     </main>
 
-    <!-- 底部 -->
+    <!-- 底部版权 -->
     <footer class="footer">
-      <div class="footer-top">
-        <div class="container">
-          <div class="footer-links">
-            <div class="footer-section">
-              <h4>购物指南</h4>
-              <ul>
-                <li><a href="#">购物流程</a></li>
-                <li><a href="#">会员介绍</a></li>
-                <li><a href="#">常见问题</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>配送方式</h4>
-              <ul>
-                <li><a href="#">配送范围</a></li>
-                <li><a href="#">配送费用</a></li>
-                <li><a href="#">配送时间</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>支付方式</h4>
-              <ul>
-                <li><a href="#">在线支付</a></li>
-                <li><a href="#">货到付款</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>售后服务</h4>
-              <ul>
-                <li><a href="#">退换货政策</a></li>
-                <li><a href="#">退换货流程</a></li>
-                <li><a href="#">价格保护</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>关于我们</h4>
-              <ul>
-                <li><a href="#">关于校园淘宝</a></li>
-                <li><a href="#">联系我们</a></li>
-                <li>
-                  <router-link to="/admin/login">管理员入口</router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="container">
-          <p>© 2026 校园淘宝商城 - 专为大学生打造的购物平台</p>
-        </div>
+      <div class="container">
+        <p>© 2026 校园淘宝商城 - 专为大学生打造的购物平台</p>
       </div>
     </footer>
   </div>
@@ -311,40 +264,6 @@ onMounted(async () => {
   cursor: pointer;
   flex-shrink: 0;
 
-  .back-landing {
-    margin-left: 12px;
-    font-size: 13px;
-    color: #fff;
-    cursor: pointer;
-    padding: 6px 20px;
-    border-radius: 30px;
-    border: none;
-    background: linear-gradient(135deg, #FF4400, #FF7A18);
-    box-shadow: 0 2px 10px rgba(255, 68, 0, 0.3);
-    transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    outline: none;
-    &:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 6px 20px rgba(255, 68, 0, 0.4);
-    }
-    &:active {
-      transform: translateY(0) scale(0.98);
-      box-shadow: 0 2px 8px rgba(255, 68, 0, 0.3);
-    }
-    .landing-icon {
-      font-size: 11px;
-      animation: twinkle 1.5s ease-in-out infinite;
-    }
-  }
-
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-  }
-
   .logo-icon {
     font-size: 32px;
     margin-right: 8px;
@@ -358,6 +277,22 @@ onMounted(async () => {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+}
+
+.nav-link {
+  margin-left: 12px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  .landing-icon {
+    font-size: 11px;
+    animation: twinkle 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .search-box {
@@ -480,52 +415,10 @@ onMounted(async () => {
 }
 
 .footer {
-  background: #fff;
-  border-top: 1px solid #e5e5e5;
-}
-
-.footer-top {
-  padding: 30px 0;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: space-between;
-}
-
-.footer-section {
-  h4 {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 12px;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    margin-bottom: 8px;
-  }
-
-  a {
-    color: #999;
-    font-size: 12px;
-    text-decoration: none;
-
-    &:hover {
-      color: #FF4400;
-    }
-  }
-}
-
-.footer-bottom {
   padding: 20px 0;
   text-align: center;
   background: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
 
   p {
     color: #999;

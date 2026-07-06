@@ -108,12 +108,10 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { updateUserInfo, updatePassword, uploadAvatar } from '@/api/user'
 import { ElMessage } from 'element-plus'
 
-const router = useRouter()
 const userStore = useUserStore()
 
 const activeMenu = ref('info')

@@ -256,13 +256,6 @@ onUnmounted(() => {
   border-right: none;
 }
 
-.order-badge {
-  :deep(.el-badge__dot) {
-    top: 2px;
-    right: 6px;
-  }
-}
-
 .order-menu-item {
   position: relative;
 

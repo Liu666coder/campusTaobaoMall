@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/store/cart'
 import { updateCartQuantity, deleteCartItem, clearCart as clearCartApi } from '@/api/cart'

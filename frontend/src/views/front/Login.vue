@@ -148,14 +148,11 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
 import { login } from '@/api/user'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
-const route = useRoute()
-const userStore = useUserStore()
 
 const formRef = ref(null)
 const phoneFormRef = ref(null)

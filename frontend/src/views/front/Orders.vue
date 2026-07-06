@@ -15,6 +15,7 @@
         <p>订单金额：<span class="price">{{ orderDetail.totalAmount }}</span></p>
       </div>
       <div class="checkout-actions">
+        <el-button @click="router.push('/store/cart')">返回</el-button>
         <el-button @click="handleCancelOrder">取消订单</el-button>
         <el-button type="primary" class="pay-btn" @click="handlePayOrder">立即付款</el-button>
       </div>
@@ -24,7 +25,7 @@
     <div v-else class="order-list">
       <!-- 订单筛选 -->
       <div class="order-tabs">
-        <el-radio-group v-model="activeTab" @change="handleTabChange">
+        <el-radio-group v-model="activeTab">
           <el-radio-button label="all">全部订单</el-radio-button>
           <el-radio-button label="0">待付款</el-radio-button>
           <el-radio-button label="1">已付款</el-radio-button>
@@ -141,8 +142,6 @@ const filteredOrders = computed(() => {
   return orders.value.filter(order => order.status === parseInt(activeTab.value))
 })
 
-const handleTabChange = () => {}
-
 const fetchOrders = async () => {
   loading.value = true
   try {
@@ -203,7 +202,7 @@ const handleCancelOrder = async () => {
     if (res.code === 200) {
       ElMessage.success('订单已取消')
       isCheckout.value = false
-      router.replace('/orders')
+      router.push('/store/cart')
     }
   } catch (e) {
     if (e !== 'cancel') ElMessage.error('取消失败')
